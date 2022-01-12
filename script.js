@@ -9,9 +9,33 @@ const square = document.querySelector('.square');
 const work = document.querySelector('.work');
 const anim = document.querySelector('.anim');
 
-const animBorderWidth = 5;
-const squareSide = 10;
-const radius = 1;
+let options;
+let animBorderWidth;
+let squareSide;
+let radius;
+const loadItems = async () => {
+  try {
+    const response = await fetch('/api/getItems', {
+      method: 'GET'
+    });
+    if (!response.ok) {
+      const res = await response.json();
+      const errText = res.errors?.length
+        ? res.errors[0].title + ': ' + res.errors[0].detail
+        : 'An unknown error occurred!';
+      throw new Error(errText);
+    }
+    options = await response.json();
+    animBorderWidth = options.animBorderWidth;
+    squareSide = options.squareSide;
+    radius = options.radius;
+  } catch (responseErr) {
+    const messageText = responseErr.message || 'An unknown error occurred!';
+    alert(messageText);
+  }
+}
+
+loadItems();
 let squareInterval;
 let dx = 0;
 let dy = 0;
