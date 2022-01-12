@@ -5,6 +5,8 @@ const closeButton = document.querySelector('.close-button');
 const startButton = document.querySelector('.start-button');
 const stopButton = document.querySelector('.stop-button');
 const reloadButton = document.querySelector('.reload-button');
+const logText = document.querySelector('.log-text');
+const smallRight = document.querySelector('.small-right');
 const square = document.querySelector('.square');
 const work = document.querySelector('.work');
 const animEl = document.querySelector('.anim');
@@ -15,6 +17,20 @@ anim.fillStyle = 'lawngreen';
 
 let options;
 let  squareSide, radius;
+
+const recordLog = (message) => {
+  logText.innerHTML = message;
+  const date = JSON.stringify(new Date());
+  const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
+  logs.push(`${date}: ${message}`);
+  localStorage.setItem('logs', JSON.stringify(logs));
+}
+
+const emptyLog = () => {
+  const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
+  smallRight.innerHTML = logs.join('\n');
+  localStorage.removeItem('logs');
+}
 
 const loadItems = async () => {
   try {
@@ -43,8 +59,11 @@ let squareInterval;
 let dx = 0;
 let dy = 0;
 let x, y;
+localStorage.clear();
 
 playButton.addEventListener('click', () => {
+  recordLog('Play button pressed');
+  recordLog('Work field shown');
   playButton.disabled = true;
   startButton.style.display = 'block';
   stopButton.style.display = 'none';
@@ -58,6 +77,9 @@ playButton.addEventListener('click', () => {
 });
 
 closeButton.addEventListener('click', () => {
+  recordLog('Close button pressed');
+  recordLog('Work field closed');
+  emptyLog();
   work.style.display = 'none';
   playButton.disabled = false;
   dx = 0;
@@ -74,13 +96,21 @@ const moveObject = () => {
 
 const controlMovement = () => {
   if(x + dx > animEl.width) {
+    recordLog('The square bumped into the right panel');
     dx = -dx;
   }
-  if(y + dy > animEl.height || y + dy < 0) {
+  if(y + dy > animEl.height) {
+    recordLog('The square bumped into the bottom panel');
+    dy = -dy;
+  }
+
+  if(y + dy < 0) {
+    recordLog('The square bumped into the top panel');
     dy = -dy;
   }
 
   if (x + dx < 0) {
+    recordLog('The square left the field');
     startButton.style.display = 'none';
     stopButton.style.display = 'none';
     reloadButton.style.display = 'block';
@@ -92,6 +122,8 @@ const controlMovement = () => {
 };
 
 startButton.addEventListener('click', () => {
+  recordLog('Start button pressed');
+
   startButton.style.display = 'none';
   reloadButton.style.display = 'none';
   stopButton.style.display = 'block';
@@ -105,6 +137,8 @@ startButton.addEventListener('click', () => {
 });
 
 stopButton.addEventListener('click', () => {
+  recordLog('Stop button pressed');
+
   startButton.style.display = 'block';
   reloadButton.style.display = 'none';
   stopButton.style.display = 'none';
@@ -112,6 +146,8 @@ stopButton.addEventListener('click', () => {
 });
 
 reloadButton.addEventListener('click', () => {
+  recordLog('Reload button pressed');
+
   startButton.style.display = 'block';
   stopButton.style.display = 'none';
   reloadButton.style.display = 'none';

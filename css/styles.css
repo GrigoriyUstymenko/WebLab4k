@@ -149,6 +149,10 @@ button {
   min-width: 5%;
 }
 
+.log-text {
+  margin: 5px;
+}
+
 .square {
   position: fixed;
   width: 10px;

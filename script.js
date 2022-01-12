@@ -8,11 +8,28 @@ const reloadButton = document.querySelector('.reload-button');
 const square = document.querySelector('.square');
 const work = document.querySelector('.work');
 const anim = document.querySelector('.anim');
+const logText = document.querySelector('.log-text');
+const smallRight = document.querySelector('.small-right');
 
 let options;
 let animBorderWidth;
 let squareSide;
 let radius;
+
+const recordLog = (message) => {
+  logText.innerHTML = message;
+  const date = JSON.stringify(new Date());
+  const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
+  logs.push(`${date}: ${message}`);
+  localStorage.setItem('logs', JSON.stringify(logs));
+}
+
+const emptyLog = () => {
+  const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
+  smallRight.innerHTML = logs.join('\n');
+  localStorage.removeItem('logs');
+}
+
 const loadItems = async () => {
   try {
     const response = await fetch('/api/getOptions', {
@@ -39,8 +56,12 @@ loadItems();
 let squareInterval;
 let dx = 0;
 let dy = 0;
+localStorage.clear();
 
 playButton.addEventListener('click', () => {
+  recordLog('Play button pressed');
+  recordLog('Work field shown');
+
   playButton.disabled = true;
   startButton.style.display = 'block';
   stopButton.style.display = 'none';
@@ -54,6 +75,10 @@ playButton.addEventListener('click', () => {
 });
 
 closeButton.addEventListener('click', () => {
+  recordLog('Close button pressed');
+  recordLog('Work field closed');
+  emptyLog();
+
   work.style.display = 'none';
   playButton.disabled = false;
   dx = 0;
@@ -74,18 +99,23 @@ const controlMovement = (object) => {
   const animRect = anim.getBoundingClientRect();
 
   if (objRect.right > animRect.right - animBorderWidth) {
+    recordLog('The square bumped into the right panel');
     dx = -dx;
   }
 
   if (objRect.top < animRect.top + animBorderWidth) {
+    recordLog('The square bumped into the top panel');
     dy = -dy;
   }
 
   if (objRect.bottom > animRect.bottom - animBorderWidth) {
+    recordLog('The square bumped into the bottom panel');
     dy = -dy;
   }
 
   if (objRect.left < animRect.left + animBorderWidth) {
+    recordLog('The square left the field');
+
     startButton.style.display = 'none';
     stopButton.style.display = 'none';
     reloadButton.style.display = 'block';
@@ -97,6 +127,8 @@ const controlMovement = (object) => {
 };
 
 startButton.addEventListener('click', () => {
+  recordLog('Start button pressed');
+
   startButton.style.display = 'none';
   reloadButton.style.display = 'none';
   stopButton.style.display = 'block';
@@ -113,6 +145,8 @@ startButton.addEventListener('click', () => {
 });
 
 stopButton.addEventListener('click', () => {
+  recordLog('Stop button pressed');
+
   startButton.style.display = 'block';
   reloadButton.style.display = 'none';
   stopButton.style.display = 'none';
@@ -120,6 +154,8 @@ stopButton.addEventListener('click', () => {
 });
 
 reloadButton.addEventListener('click', () => {
+  recordLog('Reload button pressed');
+
   startButton.style.display = 'block';
   stopButton.style.display = 'none';
   reloadButton.style.display = 'none';
