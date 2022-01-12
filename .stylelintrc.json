@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "indentation": 2,
+    "string-quotes": "single",
+    "no-duplicate-selectors": true,
+    "color-hex-case": "lower",
+    "color-hex-length": "long",
+    "color-named": "always-where-possible",
+    "selector-combinator-space-after": "always",
+    "selector-attribute-operator-space-after": "always",
+    "declaration-no-important": true,
+    "declaration-colon-space-before": "never",
+    "declaration-colon-space-after": "always",
+    "selector-pseudo-element-colon-notation": "double"
+  },
+  "ignoreFiles": ["**/*.js", "vendor/**/*.css"]
+}

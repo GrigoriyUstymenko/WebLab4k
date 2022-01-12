@@ -1,0 +1,38 @@
+{
+  "name": "weblab1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ignore-path .gitignore --no-error-on-unmatched-pattern",
+    "lint:fix": "npm run lint -- --fix --ignore-path .gitignore",
+    "format": "prettier . --ignore-path .gitignore",
+    "format:fix": "prettier --write . --ignore-path .gitignore",
+    "lint:style": "stylelint \"**/*.+(css|scss)\" --ignore-path .gitignore",
+    "lint:style:fix": "stylelint \"**/*.+(css|scss)\" --fix --ignore-path .gitignore",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrigoriyUstymenko/web-lab1.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GrigoriyUstymenko/web-lab1/issues"
+  },
+  "homepage": "https://github.com/GrigoriyUstymenko/web-lab1#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-sonarjs": "^0.11.0",
+    "husky": "^7.0.2",
+    "prettier": "^2.4.1",
+    "stylelint": "^13.13.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2"
+  }
+}
