@@ -15,7 +15,7 @@ let squareSide;
 let radius;
 const loadItems = async () => {
   try {
-    const response = await fetch('/api/getItems', {
+    const response = await fetch('/api/getOptions', {
       method: 'GET'
     });
     if (!response.ok) {
