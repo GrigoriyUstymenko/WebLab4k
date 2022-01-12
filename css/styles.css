@@ -124,6 +124,10 @@ body main .small-upper {
 }
 
 .work > .controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   height: 50px;
   width: 100%;
   background-color: darkgrey;
@@ -134,5 +138,17 @@ body main .small-upper {
   width: 100%;
   height: calc(100% - 50px);
   border: 5px solid blue;
-  background-image: url('/images/backdrop.png');
+  background-image: url('/images/backdrop.jpg');
+}
+
+button {
+  margin: 5px;
+  min-width: 5%;
+}
+
+.square {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background-color: lawngreen;
 }
