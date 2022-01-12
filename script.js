@@ -26,9 +26,9 @@ const loadItems = async () => {
       throw new Error(errText);
     }
     options = await response.json();
-    animBorderWidth = options.animBorderWidth;
-    squareSide = options.squareSide;
-    radius = options.radius;
+    animBorderWidth = +options.animBorderWidth;
+    squareSide = +options.squareSide;
+    radius = +options.radius;
   } catch (responseErr) {
     const messageText = responseErr.message || 'An unknown error occurred!';
     alert(messageText);
