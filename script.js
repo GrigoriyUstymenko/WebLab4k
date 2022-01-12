@@ -11,8 +11,10 @@ const anim = document.querySelector('.anim');
 
 const animBorderWidth = 5;
 const squareSide = 10;
+const radius = 1;
 let squareInterval;
-let angle;
+let dx = 0;
+let dy = 0;
 
 playButton.addEventListener('click', () => {
   playButton.disabled = true;
@@ -30,43 +32,33 @@ playButton.addEventListener('click', () => {
 closeButton.addEventListener('click', () => {
   work.style.display = 'none';
   playButton.disabled = false;
-  angle = undefined;
+  dx = 0;
+  dy = 0;
   clearInterval(squareInterval);
 });
 
-const moveObject = (object, angle, radius) => {
+const moveObject = (object) => {
   const rect = object.getBoundingClientRect();
-  const x = rect.left + Math.cos(angle) * radius;
-  const y = rect.top - Math.sin(angle) * radius;
+  const x = rect.left + dx;
+  const y = rect.top + dy;
   object.style.top = `${y}px`;
   object.style.left = `${x}px`;
 };
 
-const controlMovement = (object, radius) => {
+const controlMovement = (object) => {
   const objRect = object.getBoundingClientRect();
   const animRect = anim.getBoundingClientRect();
 
   if (objRect.right > animRect.right - animBorderWidth) {
-    angle -= (angle - Math.PI) * 2;
+    dx = -dx;
   }
 
   if (objRect.top < animRect.top + animBorderWidth) {
-    if(angle > Math.PI*(1/2)) {
-      console.log(angle);
-      console.log((Math.PI - angle) * 2);
-      angle += (Math.PI - angle) * 2;
-      console.log(angle)
-    }
-    angle -= (angle - Math.PI * (3 / 2)) * 2;
+    dy = -dy;
   }
 
   if (objRect.bottom > animRect.bottom - animBorderWidth) {
-    if(angle < Math.PI*(3/2)) {
-      angle -= (angle - Math.PI) * 2;
-    }
-    else {
-      angle += (Math.PI*2 - angle) * 2;
-    }
+    dy = -dy;
   }
 
   if (objRect.left < animRect.left + animBorderWidth) {
@@ -77,16 +69,23 @@ const controlMovement = (object, radius) => {
     clearInterval(squareInterval);
   }
 
-  moveObject(object, angle, radius);
+  moveObject(object);
 };
 
 startButton.addEventListener('click', () => {
   startButton.style.display = 'none';
   reloadButton.style.display = 'none';
   stopButton.style.display = 'block';
-  if (angle === undefined)
-    angle = Math.random() * (Math.PI * (3 / 2) - Math.PI) + Math.PI;
-  squareInterval = setInterval(controlMovement, 1, square, 1);
+  if (!dx && !dy){
+    const angle = Math.random() * (Math.PI * (3 / 2) - Math.PI) + Math.PI;
+    console.log(angle);
+    dx = Math.cos(angle) * radius;
+    console.log(dx);
+    dy = - Math.sin(angle) * radius;
+    console.log(dy);
+  }
+
+  squareInterval = setInterval(controlMovement, 1, square);
 });
 
 stopButton.addEventListener('click', () => {
@@ -105,5 +104,6 @@ reloadButton.addEventListener('click', () => {
   const rect = anim.getBoundingClientRect();
   square.style.top = `${rect.top + animBorderWidth}px`;
   square.style.left = `${rect.right - animBorderWidth - squareSide}px`;
-  angle = undefined;
+  dx = 0;
+  dy = 0;
 });
