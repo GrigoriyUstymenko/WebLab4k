@@ -11,31 +11,29 @@ const square = document.querySelector('.square');
 const work = document.querySelector('.work');
 const animEl = document.querySelector('.anim');
 const anim = animEl.getContext('2d');
-animEl.setAttribute('width', window.innerWidth * 0.65 - 10 + 'px');
-animEl.setAttribute('height', window.innerHeight * 0.75 - 50 + 'px');
 anim.fillStyle = 'lawngreen';
 
 let options;
-let  squareSide, radius;
+let squareSide, radius;
 
-const recordLog = (message) => {
+const recordLog = message => {
   logText.innerHTML = message;
   const date = JSON.stringify(new Date());
   const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
   logs.push(`${date}: ${message}`);
   localStorage.setItem('logs', JSON.stringify(logs));
-}
+};
 
 const emptyLog = () => {
   const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
   smallRight.innerHTML = logs.join('<br>');
   localStorage.removeItem('logs');
-}
+};
 
 const loadItems = async () => {
   try {
     const response = await fetch('/api/getOptions', {
-      method: 'GET'
+      method: 'GET',
     });
     if (!response.ok) {
       const res = await response.json();
@@ -45,13 +43,25 @@ const loadItems = async () => {
       throw new Error(errText);
     }
     options = await response.json();
-    squareSide = +options.squareSide;
-    radius = +options.movementRadius;
+    squareSide = options.squareSide;
+    radius = options.movementRadius;
+    animEl.setAttribute(
+      'width',
+      window.innerWidth * options.canvasRelWidth -
+        options.canvasBorderWidth * 2 +
+        'px'
+    );
+    animEl.setAttribute(
+      'height',
+      window.innerHeight * options.canvasRelHeight -
+        options.controlHeight +
+        'px'
+    );
   } catch (responseErr) {
     const messageText = responseErr.message || 'An unknown error occurred!';
     alert(messageText);
   }
-}
+};
 
 loadItems();
 
@@ -95,16 +105,16 @@ const moveObject = () => {
 };
 
 const controlMovement = () => {
-  if(x + dx > animEl.width) {
+  if (x + dx > animEl.width) {
     recordLog('The square bumped into the right panel');
     dx = -dx;
   }
-  if(y + dy > animEl.height) {
+  if (y + dy > animEl.height) {
     recordLog('The square bumped into the bottom panel');
     dy = -dy;
   }
 
-  if(y + dy < 0) {
+  if (y + dy < 0) {
     recordLog('The square bumped into the top panel');
     dy = -dy;
   }
@@ -127,10 +137,10 @@ startButton.addEventListener('click', () => {
   startButton.style.display = 'none';
   reloadButton.style.display = 'none';
   stopButton.style.display = 'block';
-  if (!dx && !dy){
+  if (!dx && !dy) {
     const angle = Math.random() * (Math.PI * (3 / 2) - Math.PI) + Math.PI;
     dx = Math.cos(angle) * radius;
-    dy = - Math.sin(angle) * radius;
+    dy = -Math.sin(angle) * radius;
   }
 
   squareInterval = setInterval(controlMovement, 1, square);
