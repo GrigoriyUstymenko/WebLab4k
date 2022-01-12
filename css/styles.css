@@ -135,10 +135,13 @@ body main .small-upper {
 
 .work > .anim {
   box-sizing: border-box;
-  width: 100%;
-  height: calc(100% - 50px);
   border: 5px solid blue;
   background-image: url('/images/backdrop.jpg');
+}
+
+.work > div.anim {
+  width: 100%;
+  height: calc(100% - 50px);
 }
 
 button {
