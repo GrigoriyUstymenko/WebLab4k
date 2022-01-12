@@ -11,7 +11,6 @@ const square = document.querySelector('.square');
 const work = document.querySelector('.work');
 const animEl = document.querySelector('.anim');
 const anim = animEl.getContext('2d');
-anim.fillStyle = 'lawngreen';
 
 let options;
 let squareSide, radius;
@@ -57,11 +56,13 @@ const loadItems = async () => {
         options.controlHeight +
         'px'
     );
+    anim.fillStyle = options.squareColor;
   } catch (responseErr) {
     const messageText = responseErr.message || 'An unknown error occurred!';
     alert(messageText);
   }
 };
+
 
 loadItems();
 
