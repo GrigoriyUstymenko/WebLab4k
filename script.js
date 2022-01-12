@@ -26,7 +26,7 @@ const recordLog = (message) => {
 
 const emptyLog = () => {
   const logs = JSON.parse(localStorage.getItem('logs')) ?? [];
-  smallRight.innerHTML = logs.join('\n');
+  smallRight.innerHTML = logs.join('<br>');
   localStorage.removeItem('logs');
 }
 
