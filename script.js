@@ -26,6 +26,7 @@ const loadItems = async () => {
       throw new Error(errText);
     }
     options = await response.json();
+    console.log(options);
     animBorderWidth = +options.animBorderWidth;
     squareSide = +options.squareSide;
     radius = +options.radius;
